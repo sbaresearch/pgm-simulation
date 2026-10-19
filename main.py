@@ -33,9 +33,8 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Perform a load flow analysis using a Model object created using "Nurzu-Load-Flow-Model. '
-        + "Can run simulations on the high and extra high voltage grid of Austria, or a more detailed simulation "
-        "of the KUUSK region. Also able to run attack analysis and scenarios."
+        description='Perform a load flow analysis using a Model object created using "pgm-model-builder"'
+        + "Can run simulations on the high and extra high voltage grid of Austria."
     )
     parser.add_argument(
         "-v",

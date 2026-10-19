@@ -7,7 +7,6 @@ This (along with [Nurzu Load Flow Model](https://gitlab.sba-research.org/eris/nu
 * Uses a Model object along with additional information (such as consumption and generation profiles) to run load flow analyses on the Austrian transmission grid using pandapower.
 * Can run simulations on a one-hour basis.
 * Includes advanced elements, such as automatically controlled tap changers on transformers and statcoms.
-* Can run an alternative, detailed simulation of the KUUSK region including parts of the distribution grid.
 * Supports adding future scenarios, with differing amounts of consumption and local-level generation.
 * Supports attack scenarios, whereby some parts of the network are removed. Can also run multiple vulnerability analyses to find the most vulnerable parts of the grid.
 * Creates maps of the topology of the network, the total load on the buses, and the resulting voltage levels, angles, and line loading.
@@ -105,7 +104,6 @@ Additional information can be included in the scenario directory. These are:
 * "power_import_export.csv", which creates loads and generators at substations specified as import/export substations in the model, and creates loads/generation based on the information in this file.
 * "total_actual_load.csv", which, when combined with "generation_per_source.csv", allows the consumption data to be scaled to match these values.
 
-When using the `-K` option, a simulation is run of the KUUSK area instead of all of Austria. This follows a similar pipeline, but also includes the necessary code to build the KUUSK model. The first time this is done, data is collected from OSM, which is needed to build the lines connection trafo stations. This can take some time, but after the first time, a cached version is used instead.
 
 
 ## Related Projects
