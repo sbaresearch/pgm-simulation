@@ -7,3 +7,5 @@ data/consumption
 data/scenarios
 .nvim*
 data/model
+data/attack_scenarios
+
