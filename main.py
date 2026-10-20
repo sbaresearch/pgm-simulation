@@ -217,6 +217,11 @@ if __name__ == "__main__":
 
     config.SCENARIO_PATH = scenario_path
 
+    from os.path import isdir
+
+    if not isdir(config.SCENARIO_PATH):
+        raise FileNotFoundError(f"Could not find scenario folder for path {config.SCENARIO_PATH}")
+
     create_results_dir(args.name)
 
     config.WIND_IS_LOCAL = is_wind_local(scenario_path)
