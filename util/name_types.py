@@ -1,16 +1,7 @@
-from __future__ import annotations
 from typing import NamedTuple
-from enum import Enum
 
-from pandapower.timeseries.data_sources.frame_data import DataSource
-from pandapower.control import ConstControl
 import geopandas as gpd
-
-
-class RunStatus(Enum):
-    SUCCESS = 1
-    CONTROLLER_ERROR = 2
-    FAILED = 3
+from pandapower.timeseries.data_sources.frame_data import DataSource
 
 
 class Model(NamedTuple):

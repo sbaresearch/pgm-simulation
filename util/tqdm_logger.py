@@ -9,7 +9,7 @@ class TqdmLoggingHandler(logging.Handler):
         try:
             msg = self.format(record)
             tqdm.write(msg)
-        except Exception:
+        except:  # noqa: E722
             self.handleError(record)
 
 

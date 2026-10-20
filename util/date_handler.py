@@ -29,9 +29,9 @@ def generate_dates(date_str: str) -> list[datetime]:
     # Generate list of hour segments
     hours = []
     current = dt_start
-    final_date = datetime(2022, 12, 31, 23, 00)
+    final_date = datetime(2022, 12, 31, 23, 00)  # noqa: DTZ001
     while current < dt_end and current <= final_date:
-        if datetime(2022, 3, 27, 2, 0) <= current < datetime(2022, 3, 27, 3, 0):
+        if datetime(2022, 3, 27, 2, 0) <= current < datetime(2022, 3, 27, 3, 0):  # noqa: DTZ001
             current += timedelta(hours=1)
             continue
         hours.append(current)
@@ -42,12 +42,7 @@ def generate_dates(date_str: str) -> list[datetime]:
 
 def get_date_from_str(date_str: str) -> tuple[datetime, int]:
     # Supported formats:
-    formats = {
-        1: "%Y",
-        2: "%Y-%m",
-        3: "%Y-%m-%d",
-        4: "%Y-%m-%dT%H"
-    }
+    formats = {1: "%Y", 2: "%Y-%m", 3: "%Y-%m-%d", 4: "%Y-%m-%dT%H"}
 
     parts = date_str.replace("T", "-").replace(":", "-").split("-")
     precision = len(parts)
@@ -55,6 +50,6 @@ def get_date_from_str(date_str: str) -> tuple[datetime, int]:
     if precision not in formats:
         raise ValueError(f"Unsupported date format: {date_str}")
 
-    dt = datetime.strptime(date_str, formats[precision])
+    dt = datetime.strptime(date_str, formats[precision])  # noqa: DTZ007
     dt.replace(minute=0)  # Floor down to exact hour
     return dt, precision
