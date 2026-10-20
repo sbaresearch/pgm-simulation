@@ -11,6 +11,8 @@ from util.utils import (
     vprint,
 )
 
+# TODO: remove any reference to nurzu!
+
 
 def profile_simulations(dates: list[datetime], model_path: str):
     import cProfile
@@ -92,7 +94,7 @@ if __name__ == "__main__":
         "-m",
         "--model",
         type=str,
-        help="Path to model file to use. Default: Most recent model in the data/Model dir (based on model name).",
+        help="Path to model file to use. Default: Most recent model in the data/model dir (based on model name).",
     )
     parser.add_argument("-p", "--profile", action="store_true", help="Enable profiling with cProfile")
     parser.add_argument(

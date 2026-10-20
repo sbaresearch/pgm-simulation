@@ -30,9 +30,14 @@ def get_model_path(model_path: str | None = None) -> str:
     """Finds latest model path if none is given, otherwise returns the path given."""
     if model_path is not None:
         return model_path
+
     from os import listdir
 
-    dir_path = "data/Model/" + next(iter(sorted(listdir("data/Model"), reverse=True)))
+    try:
+        dir_path = "data/model/" + next(iter(sorted(listdir("data/model"), reverse=True)))
+    except FileNotFoundError:
+        raise FileNotFoundError("Could not find any model in the data/model path.")
+
     return dir_path
 
 
