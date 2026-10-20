@@ -3,4 +3,6 @@
 __pycache__
 lib
 results/
+data/consumption
 data/scenarios
+.nvim*
