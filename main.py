@@ -11,8 +11,6 @@ from util.utils import (
     vprint,
 )
 
-# TODO: remove any reference to nurzu!
-
 
 def profile_simulations(dates: list[datetime], model_path: str):
     import cProfile
