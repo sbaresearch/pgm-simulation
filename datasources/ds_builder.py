@@ -2,13 +2,13 @@ from datetime import datetime
 
 import numpy as np
 import pandas as pd
-from pandapower.timeseries.data_sources.frame_data import DFData
 from pandapower.auxiliary import pandapowerNet
 from pandapower.control import ConstControl
+from pandapower.timeseries.data_sources.frame_data import DFData
 
-from util.power_factors import GENERATION_POWER_FACTOR
 from util import config
 from util.name_types import DataSources, Model
+from util.power_factors import GENERATION_POWER_FACTOR
 from util.utils import vprint
 
 
@@ -59,25 +59,25 @@ class DSBuilder:
         # Remove consumers not in net
         from network.static_network_builder import elwog_id_to_load_id
 
-        self._con_data = self._con_data[elwog_id_to_load_id.keys()]
+        self._con_data = self._con_data[elwog_id_to_load_id.keys()]  # pyright: ignore[reportAttributeAccessIssue]
 
         # Remove local gens not in net
         from network.static_network_builder import elwog_id_to_local_sgen_id
 
-        self._local_gen_data = self._local_gen_data[elwog_id_to_local_sgen_id.keys()]
+        self._local_gen_data = self._local_gen_data[elwog_id_to_local_sgen_id.keys()]  # pyright: ignore[reportAttributeAccessIssue]
 
         # Only keep categories in the gen profile that the model actually contains
         if self._gen_profile is not None:
-            from network.static_network_builder import pv_gen_ids, pq_gen_ids
+            from network.static_network_builder import pq_gen_ids, pv_gen_ids
 
             gens_in_net = self.model.gens.set_index("id").loc[[*pv_gen_ids, *pq_gen_ids]]
-            self._gen_profile = self._gen_profile[gens_in_net.source.unique()]
+            self._gen_profile = self._gen_profile[gens_in_net.source.unique()]  # pyright: ignore[reportAttributeAccessIssue]
 
         # Remove countries that do not have any subs in the model
         if self._import_export_profile is not None:
             from network.static_network_builder import export_country_to_load_ids
 
-            self._import_export_profile = self._import_export_profile[export_country_to_load_ids.keys()]
+            self._import_export_profile = self._import_export_profile[export_country_to_load_ids.keys()]  # pyright: ignore[reportAttributeAccessIssue]
 
     def load_datasources(self, model: Model) -> DataSources:
         load_real_ds, load_reactive_ds = self._get_con_ds()
@@ -202,7 +202,7 @@ class DSBuilder:
             gen = pd.read_csv(f"{config.SCENARIO_PATH}/generation_per_source.csv")
         except FileNotFoundError:
             vprint(f"\tNo generation profile found for scenario {config.SCENARIO_PATH}.")
-            vprint(f"\tScaling generation to match consumption.")
+            vprint("\tScaling generation to match consumption.")
             return None
 
         # Remove the unit from the column name
@@ -238,7 +238,7 @@ class DSBuilder:
             df = pd.read_csv(f"{config.SCENARIO_PATH}/power_import_export.csv")
         except FileNotFoundError:
             vprint(f"\tNo Import/Export profile found for scenario {config.SCENARIO_PATH}.")
-            vprint(f"\tAssuming no import/export.")
+            vprint("\tAssuming no import/export.")
             return None
 
         df["date"] = pd.to_datetime(df["Time from [CET/CEST]"])
@@ -332,7 +332,7 @@ class DSBuilder:
         gens = model.gens.copy()
 
         # Remove generators not in net
-        from network.static_network_builder import pv_gen_ids, pq_gen_ids
+        from network.static_network_builder import pq_gen_ids, pv_gen_ids
 
         gens = gens.set_index("id").loc[[*pv_gen_ids, *pq_gen_ids]]
 
@@ -359,19 +359,19 @@ class DSBuilder:
             columns=gen_capacities.index,  # ids
         )
 
-        from network.static_network_builder import pv_gen_ids, pq_gen_ids
+        from network.static_network_builder import pq_gen_ids, pv_gen_ids
 
         pv_mask = gens.index.isin(pv_gen_ids)
         pq_mask = gens.index.isin(pq_gen_ids)
 
         from network.static_network_builder import (
-            pv_gen_id_to_net_id,
-            pq_gen_id_to_net_id,
             hydro_pump_osm_id_to_load_id,
+            pq_gen_id_to_net_id,
+            pv_gen_id_to_net_id,
         )
 
-        gen_df = scaled_gen[scaled_gen.columns[pv_mask]].rename(columns=pv_gen_id_to_net_id).sort_index(axis=1)
-        sgen_real_df = scaled_gen[scaled_gen.columns[pq_mask]].rename(columns=pq_gen_id_to_net_id).sort_index(axis=1)
+        gen_df = scaled_gen[scaled_gen.columns[pv_mask]].rename(columns=pv_gen_id_to_net_id).sort_index(axis=1)  # pyright: ignore[reportCallIssue]
+        sgen_real_df = scaled_gen[scaled_gen.columns[pq_mask]].rename(columns=pq_gen_id_to_net_id).sort_index(axis=1)  # pyright: ignore[reportCallIssue]
         sgen_reactive_df = sgen_real_df / 8  # TODO: make this dependant on source??
 
         # Assume no pumped storage load
@@ -400,7 +400,7 @@ class DSBuilder:
         profile_matrix = profile.loc[self.dates].to_numpy()  # shape: (n_dates, n_categories)
 
         cat_to_idx = {cat: i for i, cat in enumerate(profile.columns)}
-        gen_cat_idx = gens["source"].map(cat_to_idx).to_numpy()
+        gen_cat_idx = gens["source"].map(cat_to_idx).to_numpy()  # pyright: ignore[reportArgumentType]
 
         # Get hydro pumped storage load
         # FIXME: if there are no hydro pumped storage gens that row is removed from the profile and this fails
@@ -427,7 +427,7 @@ class DSBuilder:
         power = scaling_matrix[:, gen_cat_idx] * gen_capacity  # shape: (n_dates, n_generators)
 
         # Now split the power into the pv and pq nodes
-        from network.static_network_builder import pv_gen_ids, pq_gen_ids
+        from network.static_network_builder import pq_gen_ids, pv_gen_ids
 
         pv_mask = gens.index.isin(pv_gen_ids)
         pq_mask = gens.index.isin(pq_gen_ids)
@@ -436,13 +436,13 @@ class DSBuilder:
 
         # Create the datasources
         from network.static_network_builder import (
-            pv_gen_id_to_net_id,
-            pq_gen_id_to_net_id,
             hydro_pump_osm_id_to_load_id,
+            pq_gen_id_to_net_id,
+            pv_gen_id_to_net_id,
         )
 
-        gen_df = pd.DataFrame(pv_power, columns=pv_gen_ids).rename(columns=pv_gen_id_to_net_id).sort_index(axis=1)
-        sgen_real_df = pd.DataFrame(pq_power, columns=pq_gen_ids).rename(columns=pq_gen_id_to_net_id).sort_index(axis=1)
+        gen_df = pd.DataFrame(pv_power, columns=pv_gen_ids).rename(columns=pv_gen_id_to_net_id).sort_index(axis=1)  # pyright: ignore[reportArgumentType]
+        sgen_real_df = pd.DataFrame(pq_power, columns=pq_gen_ids).rename(columns=pq_gen_id_to_net_id).sort_index(axis=1)  # pyright: ignore[reportArgumentType]
         hydro_pump_real_load_df = (
             pd.DataFrame(hydro_pump_load, columns=hydro_pumped_gens.index)
             .rename(columns=hydro_pump_osm_id_to_load_id)
@@ -470,10 +470,10 @@ class DSBuilder:
 
         profile_matrix = profile.to_numpy()  # shape: (n_dates, n_countries)
 
-        from network.static_network_builder import export_country_to_load_ids, export_country_to_gen_ids
+        from network.static_network_builder import export_country_to_gen_ids, export_country_to_load_ids
 
-        all_load_ids = sorted(set(lid for c in countries for lid in export_country_to_load_ids[c]))
-        all_gen_ids = sorted(set(gid for c in countries for gid in export_country_to_gen_ids[c]))
+        all_load_ids = sorted({lid for c in countries for lid in export_country_to_load_ids[c]})
+        all_gen_ids = sorted({gid for c in countries for gid in export_country_to_gen_ids[c]})
 
         # Go through each country and find how much each bus should take of the overall import/export
         # to that country.
@@ -499,8 +499,8 @@ class DSBuilder:
 
         exported_reactive = exported_real * EXPORTED_RP_FACTOR
 
-        exported_real_df = pd.DataFrame(exported_real, columns=all_load_ids)
-        exported_reactive_df = pd.DataFrame(exported_reactive, columns=all_load_ids)
-        imported_df = pd.DataFrame(imported, columns=all_gen_ids)
+        exported_real_df = pd.DataFrame(exported_real, columns=all_load_ids)  # pyright: ignore[reportArgumentType]
+        exported_reactive_df = pd.DataFrame(exported_reactive, columns=all_load_ids)  # pyright: ignore[reportArgumentType]
+        imported_df = pd.DataFrame(imported, columns=all_gen_ids)  # pyright: ignore[reportArgumentType]
 
         return DFData(exported_real_df), DFData(exported_reactive_df), DFData(imported_df)

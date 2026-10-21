@@ -25,7 +25,7 @@ def initialize_standard_types(net: pandapowerNet):
         "parallel": 1,
         "df": 1.0,
         "in_service": True,
-        "vector_group": "Yy0"
+        "vector_group": "Yy0",
     }
     pp.create_std_type(net, name="simbench_380_220", element="trafo", data=trafo_380_220_data)
 
@@ -33,7 +33,7 @@ def initialize_standard_types(net: pandapowerNet):
         "r_ohm_per_km": 0.020,
         "x_ohm_per_km": 0.307,
         "c_nf_per_km": 12.68,
-        "max_i_ka": 2.32
+        "max_i_ka": 2.32,
     }
     pp.create_std_type(net, name="line_380", element="line", data=line_380_data)
 
@@ -41,6 +41,6 @@ def initialize_standard_types(net: pandapowerNet):
         "r_ohm_per_km": 0.053,
         "x_ohm_per_km": 0.328,
         "c_nf_per_km": 10.5,
-        "max_i_ka": 1.39
+        "max_i_ka": 1.39,
     }
     pp.create_std_type(net, name="line_220", element="line", data=line_220_data)
