@@ -53,6 +53,8 @@ def create_results_dir(name: str | None):
         os.makedirs("results/graphs")
     if config.GENERATE_PRE_MAP and not os.path.isdir("results/graphs/total_power"):
         os.makedirs("results/graphs/total_power")
+    if config.GENERATE_RESULT_MAP and not os.path.isdir("results/graphs/result_graphs"):
+        os.makedirs("results/graphs/result_graphs")
 
     # Delete old general files
     dirs_to_empty = [
