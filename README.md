@@ -1,7 +1,7 @@
 # Power Grid simulation
-A simulation framework for running load-flow analyses on the Austrian power grid using models created with the [Nurzu Load Flow Model](https://gitlab.sba-research.org/eris/nurzu-load-flow-model) repository.
+A simulation framework for running load-flow analyses on the Austrian power grid using models created with the [pgm-model-builder](https://github.com/sbaresearch/pgm-model-builder) repository.
 
-This (along with [Nurzu Load Flow Model](https://gitlab.sba-research.org/eris/nurzu-load-flow-model) and [Get OSM data](gitlab.sba-research.org/eris/get-osm-data)) is part of a refactored and modularized successor to the now deprecated [nurzu-load-flow-analysis](https://gitlab.sba-research.org/johanna/nurzu-load-flow-analysis) repository.
+This (along with [pgm-model-builder](https://github.com/sbaresearch/pgm-model-builder) and [pgm-gather-osm-data](https://github.com/sbaresearch/pgm-gather-osm-data/tree/main)) were created as part of the Nurzu! project.
 
 ## Overview
 * Uses a Model object along with additional information (such as consumption and generation profiles) to run load flow analyses on the Austrian transmission grid using pandapower.
@@ -107,11 +107,8 @@ Additional information can be included in the scenario directory. These are:
 
 
 ## Related Projects
-* **[Nurzu Load Flow Model](https://gitlab.sba-research.org/eris/nurzu-load-flow-model)**\
+* **[pgm-model-builder](https://github.com/sbaresearch/pgm-model-builder)**\
   Builds the Model object used in this project.
 
-* **[Get OSM data](gitlab.sba-research.org/eris/get-osm-data)**\
+* **[pgm-gather-osm-data](https://github.com/sbaresearch/pgm-gather-osm-data/tree/main)**\
   Collects power grid infrastructure data from OSM.
-
-* **Deprecated:**\
-  [Nurzu Load Flow Analysis](https://gitlab.sba-research.org/johanna/nurzu-load-flow-analysis) (this project and *Nurzu Load Flow Model* replace it)
