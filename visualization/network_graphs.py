@@ -20,12 +20,10 @@ def create_top_graph(net: pandapowerNet, model: Model):
 
     mg = create_nxgraph(net)
     collections = []
-    island_index = 0
     islands = list(connected_components(mg))  # getting connected components of a graph
     colors = get_plotly_color_palette(len(islands))  # getting a color for each connected component
-    for color, area in zip(colors, islands):
+    for island_index, (color, area) in enumerate(zip(colors, islands)):
         collections += create_bus_trace(net, area, size=int(bus_size), color=color, trace_name=f"island {island_index}")
-        island_index += 1
     collections += _create_branch_trace(net, net.line.index, color="grey")
 
     if not net.ext_grid.empty:
